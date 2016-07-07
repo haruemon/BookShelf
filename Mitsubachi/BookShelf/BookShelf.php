@@ -87,7 +87,7 @@ class BookShelf extends Book
     public function getExactSearchResults($searchTarget)
     {
         foreach($this->books as $book) {
-            if(in_array($book->$searchTarget, (Array)$this->conditions[$searchTarget])) {
+            if(in_array($book->$searchTarget, $this->conditions[$searchTarget])) {
                 $this->matchedBooks[] = $book;
             }
         }
@@ -101,7 +101,7 @@ class BookShelf extends Book
     public function getLikeSearchResults($searchTarget)
     {
         foreach($this->books as $book) {
-            foreach((Array)$this->conditions[$searchTarget] as $searchValue) {
+            foreach($this->conditions[$searchTarget] as $searchValue) {
                 if(strstr($book->$searchTarget, $searchValue)) {
                     $this->matchedBooks[] = $book;
                 }
