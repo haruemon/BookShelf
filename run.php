@@ -1,9 +1,9 @@
 <?php
-$filePath = dirname(dirname(__FILE__));
 
 require_once('./Mitsubachi/BookShelf/Book.php');
 require_once('./Mitsubachi/BookShelf/BookShelf.php');
 require_once('./Mitsubachi/BookShelf/Faker.php');
+
 $books = [];
 
 $total = 100;

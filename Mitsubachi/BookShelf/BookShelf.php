@@ -50,8 +50,7 @@ class BookShelf extends Book
      */
     public function search($conditions)
     {
-        $this->conditions = $conditions;
-        //$this->setSearchCondition($conditions);
+        $this->setSearchCondition($conditions);
 
         foreach($this->books as $book) {
             $this->getExactMatchSearch($book);
@@ -65,10 +64,10 @@ class BookShelf extends Book
      *
      * @param string $title
      */
-//    public function setSearchCondition($conditions)
-//    {
-//        $this->conditions = $conditions;
-//    }
+    public function setSearchCondition($conditions)
+    {
+        $this->conditions = $conditions;
+    }
 
     /**
      * Set the search condition.
