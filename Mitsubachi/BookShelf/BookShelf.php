@@ -16,14 +16,14 @@ class BookShelf extends Book
      *
      * @var array
      */
-    protected $searchTarget;
+    protected $searchTargets;
 
     /**
      * 検索値
      *
      * @var array
      */
-    protected $searchValue;
+    protected $searchValues;
 
     /**
      * 検索結果
@@ -50,10 +50,19 @@ class BookShelf extends Book
      */
     public function search($conditions)
     {
+        $this->matchedBooks = [];
         $this->setSearchCondition($conditions);
 
-        foreach($this->books as $book) {
-            $this->getExactMatchSearch($book);
+        foreach($this->conditions as $searchTarget => $searchValue) {
+            if($searchTarget === 'isbn') {
+                $this->getIsbmSrarchResults($searchTarget);
+            }
+            if($searchTarget === 'title') {
+                $this->getTitleSrarchResults($searchTarget);
+            }
+            if($searchTarget === 'author') {
+                $this->getAuthorSrarchResults($searchTarget);
+            }
         }
 
         return $this->matchedBooks;
@@ -67,17 +76,62 @@ class BookShelf extends Book
     public function setSearchCondition($conditions)
     {
         $this->conditions = $conditions;
+        $this->searchTargets = key($conditions);
     }
 
     /**
-     * Set the search condition.
+     * Get the Isbm search condition.
      *
-     * @param string $title
+     * @param string $searchTarget
      */
-    public function getExactMatchSearch($book)
+    public function getIsbmSrarchResults($searchTarget)
     {
-        foreach($this->conditions as $searchTarget => $searchValue) {
-            if($book->$searchTarget === $searchValue) {
+        $this->getExactMatchSearch($searchTarget);
+    }
+
+    /**
+     * Get the Isbm search results.
+     *
+     * @param string $searchTarget
+     */
+    public function getTitleSrarchResults($searchTarget)
+    {
+        $this->getLikeMatchSearch($searchTarget);
+    }
+
+    /**
+     * Get the author search results.
+     *
+     * @param string $searchTarget
+     */
+    public function getAuthorSrarchResults($searchTarget)
+    {
+        $this->getLikeMatchSearch($searchTarget);
+    }
+
+    /**
+     * Set the exact match search result.
+     *
+     * @param string $searchTarget
+     */
+    public function getExactMatchSearch($searchTarget)
+    {
+        foreach($this->books as $book) {
+            if($book->$searchTarget === $this->conditions[$searchTarget]) {
+                $this->matchedBooks[] = $book;
+            }
+        }
+    }
+
+    /**
+     * Set the like match search result.
+     *
+     * @param string $searchTarget
+     */
+    public function getLikeMatchSearch($searchTarget)
+    {
+        foreach($this->books as $book) {
+            if(strstr($book->$searchTarget, $this->conditions[$searchTarget])) {
                 $this->matchedBooks[] = $book;
             }
         }
