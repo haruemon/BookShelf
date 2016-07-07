@@ -3,28 +3,38 @@
 namespace Mitsubachi\BookShelf;
 
 class Book {
-    
+
+    const PROPERTY_ISBM = 10;
+    const PROPERTY_TITLE = 20;
+    const PROPERTY_AUTHOR = 30;
+
     /**
      * ISBN
      *
      * @var string
      */
-    protected $isbn;
+    public $isbn;
 
     /**
      * タイトル
      *
      * @var string
      */
-    protected $title;
+    public $title;
 
     /**
      * 著者
      *
      * @var string
      */
-    protected $author;
-    
+    public $author;
+
+    public static $propatyLabels = [
+        self::PROPERTY_ISBM => 'isbn',
+        self::PROPERTY_TITLE => 'title',
+        self::PROPERTY_AUTHOR => 'author',
+    ];
+
     /**
      * Set the isbn.
      * 

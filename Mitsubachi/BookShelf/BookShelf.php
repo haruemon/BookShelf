@@ -19,21 +19,21 @@ class BookShelf extends Book
      *
      * @var array
      */
-    protected $searchTargets;
+    private $searchTargets;
 
     /**
      * 検索値
      *
      * @var array
      */
-    protected $searchValues;
+    private $searchValues;
 
     /**
      * 検索結果
      *
      * @var array
      */
-    protected $matchedBooks;
+    private $matchedBooks;
 
     /**
      * BookShelf constructor.
@@ -49,6 +49,7 @@ class BookShelf extends Book
      * 蔵書を検索し、条件に一致するBookオブジェクトの配列を返す
      * 
      * @param array $conditions
+     *        array $searchPatterns
      * @return array
      */
     public function search($conditions, $searchPatterns)
@@ -57,10 +58,10 @@ class BookShelf extends Book
         $this->setSearchCondition($conditions);
         foreach($this->searchTargets as $searchTarget) {
             if(in_array(self::EXACT_MATCH_SEARCH, $searchPatterns)) {
-                $this->getExactMatchSearch($searchTarget);
+                $this->getExactSearchResults($searchTarget);
             }
             if(in_array(self::LIKE_MATCH_SEARCH, $searchPatterns)) {
-                $this->getLikeMatchSearch($searchTarget);
+                $this->getLikeSearchResults($searchTarget);
             }
         }
 
@@ -70,7 +71,7 @@ class BookShelf extends Book
     /**
      * Set the search condition.
      *
-     * @param string $title
+     * @param array $conditions
      */
     public function setSearchCondition($conditions)
     {
@@ -81,12 +82,12 @@ class BookShelf extends Book
     /**
      * Set the exact match search result.
      *
-     * @param string $searchTarget
+     * @param array $searchTarget
      */
-    public function getExactMatchSearch($searchTarget)
+    public function getExactSearchResults($searchTarget)
     {
         foreach($this->books as $book) {
-            if($book->$searchTarget === $this->conditions[$searchTarget]) {
+            if(in_array($book->$searchTarget, $this->conditions[$searchTarget])) {
                 $this->matchedBooks[] = $book;
             }
         }
@@ -95,13 +96,15 @@ class BookShelf extends Book
     /**
      * Set the like match search result.
      *
-     * @param string $searchTarget
+     * @param array $searchTarget
      */
-    public function getLikeMatchSearch($searchTarget)
+    public function getLikeSearchResults($searchTarget)
     {
         foreach($this->books as $book) {
-            if(strstr($book->$searchTarget, $this->conditions[$searchTarget])) {
-                $this->matchedBooks[] = $book;
+            foreach($this->conditions[$searchTarget] as $searchValue) {
+                if(strstr($book->$searchTarget, $searchValue)) {
+                    $this->matchedBooks[] = $book;
+                }
             }
         }
     }
