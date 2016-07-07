@@ -4,6 +4,9 @@ namespace Mitsubachi\BookShelf;
 
 class BookShelf extends Book
 {
+    const EXACT_MATCH_SEARCH = 10;
+    const LIKE_MATCH_SEARCH = 20;
+
     /**
      * Bookオブジェクトの配列
      *
@@ -48,20 +51,16 @@ class BookShelf extends Book
      * @param array $conditions
      * @return array
      */
-    public function search($conditions)
+    public function search($conditions, $searchPatterns)
     {
         $this->matchedBooks = [];
         $this->setSearchCondition($conditions);
-
-        foreach($this->conditions as $searchTarget => $searchValue) {
-            if($searchTarget === 'isbn') {
-                $this->getIsbmSrarchResults($searchTarget);
+        foreach($this->searchTargets as $searchTarget) {
+            if(in_array(self::EXACT_MATCH_SEARCH, $searchPatterns)) {
+                $this->getExactMatchSearch($searchTarget);
             }
-            if($searchTarget === 'title') {
-                $this->getTitleSrarchResults($searchTarget);
-            }
-            if($searchTarget === 'author') {
-                $this->getAuthorSrarchResults($searchTarget);
+            if(in_array(self::LIKE_MATCH_SEARCH, $searchPatterns)) {
+                $this->getLikeMatchSearch($searchTarget);
             }
         }
 
@@ -76,37 +75,7 @@ class BookShelf extends Book
     public function setSearchCondition($conditions)
     {
         $this->conditions = $conditions;
-        $this->searchTargets = key($conditions);
-    }
-
-    /**
-     * Get the Isbm search condition.
-     *
-     * @param string $searchTarget
-     */
-    public function getIsbmSrarchResults($searchTarget)
-    {
-        $this->getExactMatchSearch($searchTarget);
-    }
-
-    /**
-     * Get the Isbm search results.
-     *
-     * @param string $searchTarget
-     */
-    public function getTitleSrarchResults($searchTarget)
-    {
-        $this->getLikeMatchSearch($searchTarget);
-    }
-
-    /**
-     * Get the author search results.
-     *
-     * @param string $searchTarget
-     */
-    public function getAuthorSrarchResults($searchTarget)
-    {
-        $this->getLikeMatchSearch($searchTarget);
+        $this->searchTargets = array_keys($conditions);
     }
 
     /**

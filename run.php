@@ -27,17 +27,17 @@ for ($i=1; $i<=$total; $i++) {
 
 $shelf = new Mitsubachi\BookShelf\BookShelf($books);
 
-$book1 = $shelf->search(['isbn' => 'ISBN000-0-0000-0000-0']);
+$book1 = $shelf->search(['isbn' => 'ISBN000-0-0000-0000-0'], [Mitsubachi\BookShelf\BookShelf::EXACT_MATCH_SEARCH]);
 var_dump($book1);
 
 echo '=====' . PHP_EOL;
 
-$book2 = $shelf->search(['title' => 'オブジェクト指向']);
+$book2 = $shelf->search(['title' => 'オブジェクト指向'], [Mitsubachi\BookShelf\BookShelf::LIKE_MATCH_SEARCH]);
 var_dump($book2);
 
 echo '=====' . PHP_EOL;
 
-$book3 = $shelf->search(['author' => 'Williams']);
+$book3 = $shelf->search(['author' => 'Williams'], [Mitsubachi\BookShelf\BookShelf::LIKE_MATCH_SEARCH]);
 var_dump($book3);
 
 
