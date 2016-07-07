@@ -31,17 +31,17 @@ for ($i=1; $i<=$total; $i++) {
 
 $shelf = new BookShelf($books);
 
-$book1 = $shelf->search([Book::$propatyLabels[Book::PROPERTY_ISBM] => ['ISBN000-0-0000-0000-0']], [BookShelf::EXACT_MATCH_SEARCH]);
+$book1 = $shelf->search([Book::$propatyLabels[Book::PROPERTY_ISBM] => 'ISBN000-0-0000-0000-0'], [BookShelf::EXACT_MATCH_SEARCH]);
 var_dump($book1);
 
 echo '=====' . PHP_EOL;
 
-$book2 = $shelf->search([Book::$propatyLabels[Book::PROPERTY_TITLE] => ['オブジェクト指向']], [BookShelf::LIKE_MATCH_SEARCH]);
+$book2 = $shelf->search([Book::$propatyLabels[Book::PROPERTY_TITLE] => 'オブジェクト指向'], [BookShelf::LIKE_MATCH_SEARCH]);
 var_dump($book2);
 
 echo '=====' . PHP_EOL;
 
-$book3 = $shelf->search([Book::$propatyLabels[Book::PROPERTY_AUTHOR] => ['Williams']], [BookShelf::LIKE_MATCH_SEARCH]);
+$book3 = $shelf->search([Book::$propatyLabels[Book::PROPERTY_AUTHOR] => 'Williams'], [BookShelf::LIKE_MATCH_SEARCH]);
 var_dump($book3);
 
 
